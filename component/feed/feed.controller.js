@@ -1,7 +1,9 @@
 var feedQuery = require('./feed.query');
 
 function insert(req, res, next) {
-    feedQuery.insert(req.body)
+    var data = req.body;
+    data.user = req.loggedInUser._id;
+    feedQuery.insert(data)
         .then(function(data) {
             res.status(200).json(data);
         })
@@ -13,6 +15,8 @@ function insert(req, res, next) {
 
 function find(req, res, next) {
     var condition = {};
+    // console.log(req.loggedInUser);
+    condition.user = req.loggedInUser._id;
     feedQuery.find(condition)
         .then(function(data){
             res.status(200).json(data);
@@ -41,6 +45,7 @@ function findById(req, res, next) {
 function search(req, res, next) {
     var condition = {};
     feedQuery.find(condition)
+        .sort({_id:-1})
         .then(function(data){
             if(data.length)
                 res.status(200).json(data);

@@ -1,6 +1,7 @@
 var router =  require('express').Router();
 var feedController = require('./feed.controller');
 
+
 router.route('/')
     .post(feedController.insert)
     .get(feedController.find);

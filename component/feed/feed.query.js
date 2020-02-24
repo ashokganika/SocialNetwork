@@ -20,7 +20,8 @@ function insert(data) {
 }
 
 function find(condtion) {
-    return feedModel.find(condtion);
+    return feedModel.find(condtion)
+        .populate('user',{name:1,email:1, role:1}); 
 }
 
 function update(id, data){

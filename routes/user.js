@@ -1,9 +1,11 @@
 var router = require('express').Router();
 var userModel = require('./../models/user.model');
 var mapUser = require('./../helpers/mapUser');
+var authrorize = require('./../middlewares/authorize');
 
 router.route('/')
     .get(function(req, res, next) {
+        // console.log(req.loggedInUser);
         userModel
         .find({})
         .sort({_id:-1})
@@ -58,7 +60,7 @@ router.route('/:id')
             });
     })
     
-    .delete(function(req, res, next) {
+    .delete(authrorize, function(req, res, next) {
         userModel.findById({_id: req.params.id})
         .exec(function(err, user) {
             if(err){

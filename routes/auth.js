@@ -2,7 +2,14 @@ var router = require('express').Router();
 var userModel = require('./../models/user.model');
 var mapUser = require('./../helpers/mapUser');
 var hashPassword = require('password-hash');
+var jwt = require('jsonwebtoken');
+var configs = require('./../configs/index');
 
+
+function generateToken(data) {
+    var token = jwt.sign({id:data._id}, configs.secretKey);
+    return token;
+}
 
 router.route('/register')
     .post(function(req, res, next) {
@@ -19,7 +26,7 @@ router.route('/register')
 
 router.route('/login')
     .post(function(req, res, next) {
-        // console.log(req.body.username);
+       
         userModel.findOne({
             $or:[
                 {
@@ -37,7 +44,7 @@ router.route('/login')
                 if(user){
                      var isPasswordMatch = hashPassword.verify(req.body.password, user.password) 
                      if(isPasswordMatch){
-                         res.status(200).json(user);
+                        res.status(200).json({user, token:generateToken(user)});
                      }
                      else{
                          return next({

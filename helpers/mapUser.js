@@ -16,6 +16,8 @@ function mapUser(originalUser, updateUser){
         originalUser.dob= updateUser.dob;
     if(updateUser.phone)
         originalUser.phone= updateUser.phone;
+    if(updateUser.role)
+        originalUser.role= updateUser.role;    
 
     return originalUser;    
 }
