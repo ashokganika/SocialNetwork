@@ -1,8 +1,18 @@
 var feedQuery = require('./feed.query');
 
 function insert(req, res, next) {
+    console.log(req.body);
+    console.log(req.file);
     var data = req.body;
     data.user = req.loggedInUser._id;
+    if(req.fileError){
+        return next({
+            msg: "invalid file format"
+        })
+    }
+    if(req.file){
+        data.image = req.file.filename;
+    }
     feedQuery.insert(data)
         .then(function(data) {
             res.status(200).json(data);

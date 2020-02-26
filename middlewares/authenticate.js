@@ -2,6 +2,7 @@ var jwt = require('jsonwebtoken');
 var configs = require('./../configs/index');
 var userModel = require('./../models/user.model');
 
+
 module.exports = function(req, res, next){
     var token;
     if(req.headers['token']){
@@ -18,7 +19,7 @@ module.exports = function(req, res, next){
             if(err){
                 return next(err);
             }
-            console.log(decoded);
+            // console.log(decoded);
             userModel.findById(decoded.id)
                 .exec(function(err, user) {
                     if(err){

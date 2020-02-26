@@ -1,9 +1,9 @@
 var router =  require('express').Router();
 var feedController = require('./feed.controller');
-
+var uploader = require('./../../middlewares/fileUploader');
 
 router.route('/')
-    .post(feedController.insert)
+    .post(uploader.single("img"), feedController.insert)
     .get(feedController.find);
 
 router.route('/search')
