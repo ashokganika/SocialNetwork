@@ -19,31 +19,39 @@ function insert(data) {
      return mappedFeed.save();
 }
 
-function find(condtion) {
+function find(condtion, pageSize, pageNumber) {
+    var perPage = pageSize || 100;
+    console.log(perPage);
+    var pageItems = ((pageNumber - 1) || 0) * perPage;
+    console.log(pageItems);
     return feedModel.find(condtion)
-        .populate('user',{name:1,email:1, role:1}); 
+        .populate('user',{name:1,email:1, role:1})
+        .limit(Number(perPage))
+        .skip(pageItems)
+        .sort({_id:-1}); 
 }
 
 function update(id, data){
     return new Promise(function(resolve, reject){
         feedModel.findById(id)
-        .exec(function(err, user){
+        .exec(function(err, feed){
             if(err){
                 reject(err);
             }
-            if(user){
-                var updateUser = mapFeed(user, data);
-                updateUser.save(function(err, done){
+            if(feed){
+                var oldImg = feed.image;
+                var updateFeed = mapFeed(feed, data);
+                updateFeed.save(function(err, done){
                     if(err){
                         reject(err);
                     }
                     else {
-                        resolve(done);
+                        resolve({oldImg,done});
                     }
                 })
             }
             else{
-                reject({msg:"No such user"})
+                reject({msg:"No such feed"})
             }
         })
     })      
@@ -52,6 +60,7 @@ function update(id, data){
 
 function remove(id){
     return feedModel.findByIdAndRemove(id);
+    
 }
 
 

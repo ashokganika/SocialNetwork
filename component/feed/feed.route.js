@@ -11,7 +11,7 @@ router.route('/search')
 
 router.route('/:id')
     .get(feedController.findById)
-    .put(feedController.update)
+    .put(uploader.single("img"),feedController.update)
     .delete(feedController.remove);
 
 

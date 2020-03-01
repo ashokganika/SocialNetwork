@@ -14,6 +14,10 @@ module.exports = function(req, res, next){
     if(req.headers['x-access-token']){
         token = req.headers['x-access-token'];
     }
+
+    if(req.query['token']){
+        token = req.query['token'];
+    }
     if(token){
         jwt.verify(token, configs.secretKey, function(err, decoded){
             if(err){
