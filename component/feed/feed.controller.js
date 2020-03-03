@@ -59,6 +59,14 @@ function search(req, res, next) {
     if(req.body.title){
         condition.title = req.body.title;
     }
+    if (req.body.fromDate && req.body.toDate) {
+        var fromDate = new Date(req.body.fromDate).setHours(0, 0, 0, 0);
+        var toDate = new Date(req.body.toDate).setHours(23, 59, 59, 999);
+        searchCondition.createdAt = {
+            $gte: new Date(fromDate),
+            $lte: new Date(toDate)
+        }
+    }
     feedQuery.find(condition, req.query.pageSize, req.query.pageNumber)
         .sort({_id:-1})
         .then(function(data){
