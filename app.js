@@ -10,6 +10,7 @@ var cors = require('cors');
 const port = process.env.PORT || 8001;
 
 var app = express();
+require('./socket');
 require('./db');
 
 app.use(logger('dev'));
