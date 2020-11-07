@@ -4,7 +4,7 @@ var logger = require("morgan");
 var apiRouter = require("./routes/api.routes");
 var cors = require("cors");
 
-const port = process.env.PORT || 8001;
+const port = process.env.PORT || 8000;
 
 var app = express();
 require("./socket");
@@ -14,9 +14,8 @@ app.use(logger("dev"));
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
 
-app.use(express.static("uplaods/images"));
+app.use(express.static("uploads/images"));
 app.use("/file", express.static(path.join(__dirname, "uploads/images")));
 
 app.use("/api", apiRouter);
